@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +19,12 @@ import java.util.concurrent.TimeUnit;
 public class PlayerBlockTimer {
 
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
-    private HashMap<Player, List<Location>> map = new HashMap<>();
+    private static HashMap<Player, List<Location>> map = new HashMap<>();
+    private static boolean isCritical = false;
+
+    public static boolean isCritical() {
+        return isCritical;
+    }
 
     public void addPlayer(Player player, Block block) {
         List<Location> blocks;
@@ -33,6 +39,17 @@ public class PlayerBlockTimer {
             }
             blocks.add(block.getLocation());
             map.put(player, blocks);
+        }
+    }
+
+    public static void removePlayer(Player player) {
+        List<Location> blocks;
+        if (map != null) {
+            if (map.containsKey(player)) {
+                blocks = map.get(player);
+                blocks.clear();
+                map.remove(player);
+            }
         }
     }
 
@@ -61,39 +78,54 @@ public class PlayerBlockTimer {
         executor.scheduleAtFixedRate(() -> {
             Optional<Block> block;
             Optional<List<Location>> blocks;
+            Optional<Player> player;
             Location loc;
             for (String name : ParticipantManager.getInstance().getParticipants()) {
-                Player player = Bukkit.getPlayer(name);
-                if (player != null) {
-                    block = getBlockAt(player);
-                    block.ifPresent(b -> addPlayer(player, b));
-                    blocks = Optional.ofNullable(map.get(player));
+                player = Optional.ofNullable(Bukkit.getPlayer(name));
+                if (player.isPresent()) {
+                    if (player.get().getAllowFlight()) {
+                        player.get().setAllowFlight(false);
+                    }
+                    if (player.get().isFlying()) {
+                        player.get().setFlying(false);
+                    }
+                    if (player.get().getLocation().getY() <= 0) {
+                        player.get().teleport(new Location(Bukkit.getWorld("world"), 0, 75, 0));
+                        if (player.get().hasPotionEffect(PotionEffectType.GLOWING)) {
+                            player.get().removePotionEffect(PotionEffectType.GLOWING);
+                        }
+                        continue;
+                    }
+                    block = getBlockAt(player.get());
+                    if (block.isPresent()) {
+                        addPlayer(player.get(), block.get());
+                    } else {
+                        removePlayer(player.get());
+                    }
+                    blocks = Optional.ofNullable(map.get(player.get()));
                     if (blocks.isPresent()) {
-                        Location l = player.getLocation();
+                        isCritical = true;
+                        Location l = player.get().getLocation();
                         try {
                             Thread.sleep(200);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        if (player.getLocation().getBlockX() == l.getBlockX()
-                        && player.getLocation().getBlockZ() == l.getBlockZ()) {
+                        if (player.get().getLocation().getBlockX() == l.getBlockX()
+                        && player.get().getLocation().getBlockZ() == l.getBlockZ()) {
                             for (Location lc : blocks.get()) {
-                                if (lc.getBlock().getType() == Material.TNT) {
-                                    lc.getBlock().setType(Material.AIR);
-                                }
+                                lc.getBlock().setType(Material.AIR);
                             }
                         }
-
                         if (blocks.get().size() >= 2) {
                             loc = blocks.get().get(0);
-                            if (loc.getBlock().getType() == Material.TNT) {
-                                loc.getBlock().setType(Material.AIR);
-                            }
+                            loc.getBlock().setType(Material.AIR);
                             blocks.get().remove(0);
                         }
                     }
                 }
             }
+            isCritical = false;
         }, 0, 50, TimeUnit.MILLISECONDS);
     }
 

@@ -2,11 +2,13 @@ package dev.nest.tntrun.commands;
 
 import dev.nest.tntrun.managers.FileManager;
 import dev.nest.tntrun.managers.ParticipantManager;
+import dev.nest.tntrun.timers.PlayerBlockTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 
@@ -24,7 +26,21 @@ public class EventRmvAllCmd implements CommandExecutor {
                 player.sendMessage("Incorrect usage!");
                 return false;
             }
-            ParticipantManager.getInstance().clear();
+            for (String s : ParticipantManager.getInstance().getParticipants()) {
+                Player p = Bukkit.getPlayer(s);
+                if (p != null) {
+                    if (!PlayerBlockTimer.isCritical()) {
+                        PlayerBlockTimer.removePlayer(p);
+                        ParticipantManager.getInstance().clear();
+                    } else {
+                        player.sendMessage("Thread de-sync imminent, async thread is in a critical part of a for-loop, try again...");
+                        return false;
+                    }
+                    if (p.hasPotionEffect(PotionEffectType.GLOWING)) {
+                        p.removePotionEffect(PotionEffectType.GLOWING);
+                    }
+                }
+            }
             File[] files = FileManager.getInstance().getTemp().listFiles();
             if (files != null) {
                 for (File file : files) {

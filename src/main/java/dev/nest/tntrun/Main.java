@@ -3,6 +3,7 @@ package dev.nest.tntrun;
 import dev.nest.tntrun.commands.*;
 import dev.nest.tntrun.listeners.JoinListener;
 import dev.nest.tntrun.listeners.QuitListener;
+import dev.nest.tntrun.listeners.WorldSwitch;
 import dev.nest.tntrun.managers.FileManager;
 import dev.nest.tntrun.timers.PlayerBlockTimer;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +17,7 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
         getServer().getPluginManager().registerEvents(new QuitListener(), this);
+        getServer().getPluginManager().registerEvents(new WorldSwitch(), this);
         getCommand("eventadd").setExecutor(new EventAddCmd());
         getCommand("eventrmv").setExecutor(new EventRmvCmd());
         getCommand("eventchk").setExecutor(new EventChkCmd());
@@ -29,7 +31,9 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         FileManager.getInstance().serializeParticipants();
-        timer.stop();
+        if (timer.isRunning()) {
+            timer.stop();
+        }
     }
 
 }

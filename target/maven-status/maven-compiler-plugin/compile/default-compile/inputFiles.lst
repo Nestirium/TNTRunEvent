@@ -2,11 +2,12 @@ C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\commands\E
 C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\listeners\JoinListener.java
 C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\commands\EventRmvAllCmd.java
 C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\Main.java
+C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\listeners\WorldSwitch.java
+C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\managers\FileManager.java
+C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\managers\ParticipantManager.java
+C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\commands\EventAddCmd.java
 C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\commands\EventChkCmd.java
 C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\listeners\QuitListener.java
 C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\commands\EventLstCmd.java
-C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\managers\FileManager.java
 C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\commands\EventRmvCmd.java
-C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\managers\ParticipantManager.java
 C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\timers\PlayerBlockTimer.java
-C:\Users\nesti\IdeaProjects\TNTRunEvent\src\main\java\dev\nest\tntrun\commands\EventAddCmd.java

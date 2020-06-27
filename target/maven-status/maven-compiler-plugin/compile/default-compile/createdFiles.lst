@@ -8,5 +8,6 @@ dev\nest\tntrun\managers\ParticipantManager.class
 dev\nest\tntrun\timers\PlayerBlockTimer.class
 dev\nest\tntrun\commands\EventRmvCmd.class
 dev\nest\tntrun\listeners\JoinListener.class
+dev\nest\tntrun\listeners\WorldSwitch.class
 dev\nest\tntrun\listeners\QuitListener.class
 dev\nest\tntrun\commands\EventStopCmd.class
