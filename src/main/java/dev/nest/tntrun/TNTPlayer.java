@@ -33,19 +33,17 @@ public class TNTPlayer {
         blocks.add(block.getLocation());
     }
 
-    public void removeLocation(Block block) {
-        blocks.remove(block.getLocation());
-    }
-
     public String getName() {
         return name;
     }
 
     public Optional<Block> getBlockAt(Player player) {
-        Location backRight = player.getLocation().clone().add(0.3, -0.9, -0.3);
-        Location backLeft = player.getLocation().clone().add(-0.3, -0.9, -0.3);
-        Location upperRight = player.getLocation().clone().add(0.3, -0.9, 0.3);
-        Location upperLeft = player.getLocation().clone().add(-0.3, -0.9, 0.3);
+
+        Location backRight = player.getLocation().clone().add(0.3, -1, -0.3);
+        Location backLeft = player.getLocation().clone().add(-0.3, -1, -0.3);
+        Location upperRight = player.getLocation().clone().add(0.3, -1, 0.3);
+        Location upperLeft = player.getLocation().clone().add(-0.3, -1, 0.3);
+
         if (backRight.getBlock().getType() == Material.TNT) {
             return Optional.of(backRight.getBlock());
         }
@@ -58,6 +56,8 @@ public class TNTPlayer {
         if (upperRight.getBlock().getType() == Material.TNT) {
             return Optional.of(upperRight.getBlock());
         }
+
+
         return Optional.empty();
     }
 
@@ -92,7 +92,7 @@ public class TNTPlayer {
                     if (blocks.isPresent()) {
                         Location l = p.getLocation();
                         try {
-                            Thread.sleep(200);
+                            Thread.sleep(100);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

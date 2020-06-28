@@ -7,6 +7,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EventLstCmd implements CommandExecutor {
 
     @Override
@@ -18,13 +21,24 @@ public class EventLstCmd implements CommandExecutor {
         }
         final Player player = (Player) sender;
         if (player.hasPermission("tntrun.event")) {
-            if (args.length > 0) {
-                player.sendMessage("Incorrect usage!");
-                return false;
+            if (args.length == 0) {
+                for (TNTPlayer p : TNTPlayerManager.getInstance().getTntPlayers()) {
+                    player.sendMessage(p.getName());
+                }
+            } else if (args.length == 1) {
+                if (args[0].equalsIgnoreCase("playing")) {
+                    List<String> pl = new ArrayList<>();
+                    for (TNTPlayer p : TNTPlayerManager.getInstance().getTntPlayers()) {
+                        if (p.isPlaying()) {
+                            pl.add(p.getName());
+                        }
+                    }
+                    for (String s : pl) {
+                        player.sendMessage(s);
+                    }
+                }
             }
-            for (TNTPlayer p : TNTPlayerManager.getInstance().getTntPlayers()) {
-                player.sendMessage(p.getName());
-            }
+
         } else {
             player.sendMessage("No perms");
         }
