@@ -1,6 +1,7 @@
 package dev.nest.tntrun.commands;
 
-import dev.nest.tntrun.managers.ParticipantManager;
+import dev.nest.tntrun.TNTPlayer;
+import dev.nest.tntrun.managers.TNTPlayerManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,8 +22,8 @@ public class EventLstCmd implements CommandExecutor {
                 player.sendMessage("Incorrect usage!");
                 return false;
             }
-            for (String s : ParticipantManager.getInstance().getParticipants()) {
-                player.sendMessage(s);
+            for (TNTPlayer p : TNTPlayerManager.getInstance().getTntPlayers()) {
+                player.sendMessage(p.getName());
             }
         } else {
             player.sendMessage("No perms");

@@ -11,18 +11,15 @@ commands:
   eventlst:
     aliases:
       - eventlist
-  eventstop:
+  eventplay:
     aliases:
-      - eventstp
-  eventadd:
-    aliases:
-      - eventadd
+      - eventply
   eventrmv:
     aliases:
       - eventremove
   eventchk:
     aliases:
       - eventcheck
-  eventstate:
+  eventstrt:
     aliases:
-      - eventstt
+      - eventstart

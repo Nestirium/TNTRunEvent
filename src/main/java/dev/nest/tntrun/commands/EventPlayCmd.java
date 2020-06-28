@@ -1,7 +1,7 @@
 package dev.nest.tntrun.commands;
 
-import dev.nest.tntrun.managers.ParticipantManager;
-import org.bukkit.Bukkit;
+import dev.nest.tntrun.TNTPlayer;
+import dev.nest.tntrun.managers.TNTPlayerManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class EventAddCmd implements CommandExecutor {
+public class EventPlayCmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -23,17 +23,16 @@ public class EventAddCmd implements CommandExecutor {
                 player.sendMessage("Incorrect usage!");
                 return false;
             }
-            final Player target = Bukkit.getServer().getPlayer(args[0]);
+            final TNTPlayer target = TNTPlayerManager.getInstance().getTntPlayer(args[0]);
             if (target != null) {
-                if (!ParticipantManager.getInstance().isParticipant(target.getName())) {
-                    ParticipantManager.getInstance().addParticipant(target.getName());
-                    target.getActivePotionEffects().clear();
-                    if (!target.hasPotionEffect(PotionEffectType.GLOWING)) {
-                        target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 9999, 1));
+                if (!target.isPlaying()) {
+                    target.setPlaying(true);
+                    if (!target.getSpigotPlayer().hasPotionEffect(PotionEffectType.GLOWING)) {
+                        target.getSpigotPlayer().addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 9999, 1));
                     }
-                    player.sendMessage("Added " + target.getName());
+                    player.sendMessage("Resuming " + target.getName());
                 } else {
-                    player.sendMessage("Target is already participant");
+                    player.sendMessage("Target is already playing!");
                 }
             } else {
                 player.sendMessage("Target not online!");
