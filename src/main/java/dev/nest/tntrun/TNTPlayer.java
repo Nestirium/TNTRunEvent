@@ -1,11 +1,11 @@
 package dev.nest.tntrun;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,10 +80,11 @@ public class TNTPlayer {
                     p.setFlying(false);
                 }
                 if (p.getLocation().getY() <= 0) {
-                    p.teleport(new Location(Bukkit.getWorld("world"), 0, 75, 0));
-                    if (p.hasPotionEffect(PotionEffectType.GLOWING)) {
-                        p.removePotionEffect(PotionEffectType.GLOWING);
-                    }
+                    p.setGameMode(GameMode.SPECTATOR);
+                    p.teleport(new Location(Bukkit.getWorld("world"), 0, 189, 0));
+                    p.setAllowFlight(true);
+                    p.setFlying(true);
+                    isPlaying = false;
                 }
                 block = getBlockAt(p);
                 if (block.isPresent()) {
@@ -92,7 +93,7 @@ public class TNTPlayer {
                     if (blocks.isPresent()) {
                         Location l = p.getLocation();
                         try {
-                            Thread.sleep(100);
+                            Thread.sleep(150);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
