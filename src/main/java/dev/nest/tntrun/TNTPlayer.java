@@ -25,7 +25,7 @@ public class TNTPlayer {
     public TNTPlayer(String name) {
         this.name = name;
         isPlaying = false;
-        scheduledExecutorService = Executors.newScheduledThreadPool(4);
+        scheduledExecutorService = Executors.newScheduledThreadPool(1);
         blocks = new ArrayList<>();
     }
 
